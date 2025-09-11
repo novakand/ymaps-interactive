@@ -11,6 +11,10 @@
 npm-debug.log
 yarn-error.log
 
+/projects/app/
+/projects/map-core/
+/projects/map-iframe/
+
 # IDEs and editors
 .idea/
 .project
