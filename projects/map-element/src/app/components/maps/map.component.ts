@@ -194,8 +194,6 @@ export class MapComponent {
             f.__orig = { fill: f.style?.fill, fillOpacity: f.style?.fillOpacity };
         }
 
-        console.log(f.properties)
-
         const sel = f.properties?.selectedFillColor || f.properties?.fillColor;
         this.patchParcelById(id, { style: { ...(f.style ?? {}), fill: sel, fillOpacity: f.properties?.fillOpacity } });
 
@@ -259,7 +257,6 @@ export class MapComponent {
             const id = this.getIdFromParcel(ent);
             if (id) {
 
-                console.log(ent, '111')
                 this.popup = { id, coords: ent?.properties.center, data: ent?._props?.properties ?? {} };
                 this.toggleSelect(id);
             }
@@ -281,7 +278,6 @@ export class MapComponent {
 
 
     onClickFeature = (evt: any) => {
-        console.log(evt)
         const ent = evt?.entity;
         if (!ent || evt.source !== 'parcels') return;
 
@@ -296,7 +292,6 @@ export class MapComponent {
 
     public onClickMarker(evt: any) {
         const ent = evt?.entity;
-        console.log(evt, 'evt')
         if (!ent || evt.source !== 'marker') return;
 
         const props = ent._props?.properties ?? {};

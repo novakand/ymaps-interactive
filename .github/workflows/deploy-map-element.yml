@@ -1,8 +1,9 @@
-name: Deploy map-element to GitHub Pages
+name: Deploy map-element to GH Pages
 
 on:
   push:
-    branches: [ master ]   # деплой при каждом пуше в master
+    branches: [ master ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -21,13 +22,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
       - run: npm ci
       - run: npx ng build map-element --configuration=production --base-href=/ymaps-interactive/
-      - name: SPA 404
-        run: cp dist/map-element/browser/index.html dist/map-element/browser/404.html
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/map-element/browser
 

@@ -59,6 +59,11 @@
                 "input": "projects/map-element/src",
                 "output": "/"
               },
+               {
+                "glob": "manifest.json",
+                "input": "projects/map-element/src",
+                "output": "/"
+              },
               {
                 "glob": "**/*",
                 "input": "projects/map-element/src/assets",
