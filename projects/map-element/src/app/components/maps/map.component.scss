@@ -1,38 +1,23 @@
-
-:host ::ng-deep
-ymaps.ymaps3x0--control.ymaps3x0--control__background:has(> .map-legend) {
+:host ::ng-deep ymaps.ymaps3x0--control.ymaps3x0--control__background:has(> .map-legend) {
   background: transparent !important;
   box-shadow: none !important;
-  /* при желании */
-  /* border-radius: 0 !important; */
 }
 
-/* уберём внутренние паддинги у "коробки" контрола */
-:host ::ng-deep
-ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
+:host ::ng-deep ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
   padding: 0 !important;
 }
 
 ::ng-deep {
 
-
-
   .map-legend {
     pointer-events: auto;
-    /* кликабельно при необходимости */
     user-select: none;
     padding: 8px 10px;
-    /* при желании можно добавить слегка затемнённый фон:
-  background: rgba(0,0,0,.08);
-  backdrop-filter: blur(2px);
-  border-radius: 8px;
-  */
   }
 
   .map-legend__item {
     display: grid;
     grid-template-columns: 24px 1fr;
-    /* колонка под номер/стрелку + текст */
     align-items: center;
     column-gap: 12px;
     margin: 10px 0;
@@ -42,7 +27,6 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
     width: 24px;
     text-align: center;
     color: #E73527;
-    /* тот самый красный */
     font-weight: 700;
     font-size: 24px;
     line-height: 1;
@@ -50,23 +34,19 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
 
   .map-legend__arrow {
     width: 18px;
-    /* размер треугольника */
     height: auto;
     display: inline-block;
     transform: translateY(2px);
-    /* лёгкое выравнивание по оптическому центру */
   }
 
   .map-legend__text {
     color: #fff;
     font-weight: 600;
     font-size: 20px;
-    /* как на скрине — крупный */
     line-height: 1.25;
 
   }
 
-  /* адаптация на небольших экранах/при сильном отдалении */
   @media (max-width: 1200px) {
     .map-legend__text {
       font-size: 22px;
@@ -89,7 +69,6 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
     padding: 2px 6px;
     border-radius: 3px;
     background: #e53935;
-    /* красный по умолчанию */
     color: #fff;
     font-weight: 700;
     text-transform: uppercase;
@@ -100,19 +79,14 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
     white-space: nowrap;
   }
 
-  /* варианты, если захочешь различать статусы */
   .parcel-badge--sold {
     background: #CC0202;
   }
 
-  /* ПРОДАНО */
   .parcel-badge--reserved {
     background: #f6a000;
   }
 
-  /* БРОНЬ (пример) */
-
-  /* твои текущие */
   .parcel-label__name {
     color: #fff;
     text-shadow: 0 1px 0 rgba(0, 0, 0, .35);
@@ -125,10 +99,8 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
   .popup {
     position: relative;
     transform: translate(-50%, -100%) translateY(-10px);
-    /* над точкой */
     transform-origin: 50% 100%;
     pointer-events: auto;
-
     background: #fff;
     border-radius: 10px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
@@ -147,7 +119,6 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
     transform: translateX(-50%);
     border: 8px solid transparent;
     border-top-color: #fff;
-    /* «хвостик» */
     filter: drop-shadow(0 -2px 2px rgba(0, 0, 0, .06));
   }
 
@@ -190,7 +161,6 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
   }
 
   .parcel-label {
-    /* базовое позиционирование маркера */
     transform: translate(-50%, -50%);
     text-align: center;
     line-height: 1.05;
@@ -202,8 +172,6 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
       0 -1px 0 rgba(0, 0, 0, .35),
       1px 0 0 rgba(0, 0, 0, .35),
       -1px 0 0 rgba(0, 0, 0, .35);
-
-    /* <<< ключ: вся типографика завязана на переменную --fs >>> */
     font-size: var(--fs);
   }
 
@@ -232,7 +200,6 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
   .marker-label__name {
     transform: translate(-50%, -100%) rotate(var(--deg, 0deg)) scale(var(--scale, 1));
     transform-origin: 50% 100%;
-    /* читаем ту же переменную, которую задали инлайном */
     font-size: var(--fsm, 1.5em);
     line-height: 1.05;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -242,9 +209,7 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
     pointer-events: none;
   }
 
-
   .arrow-pin {
-    /* якорь — центр-низ, чтобы кончик стоял в точке */
     transform: translate(-50%, -100%) rotate(var(--deg, 0deg)) scale(var(--scale, 1));
     transform-origin: 50% 100%;
     pointer-events: none;
@@ -300,297 +265,4 @@ ymaps.ymaps3x0--control:has(> .map-legend) .ymaps3x0--control__content {
     transition: font-size 80ms linear;
   }
 
-  .mapboxgl-popup-content {
-    padding: 0;
-    background: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup {
-    z-index: 2;
-  }
-
-  .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
-    border-left-color: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
-    border-bottom-color: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
-    border-bottom-color: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip {
-    border-bottom-color: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
-    border-right-color: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip {
-    border-top-color: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
-    border-top-color: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
-    border-top-color: var(--p-overlay-modal-background);
-  }
-
-  .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
-    border-top-color: var(--p-overlay-modal-background);
-  }
-
-  .infobox-wrapper-icon-close {
-    position: absolute;
-    display: block;
-    right: 10px;
-    top: 10px;
-    cursor: pointer;
-  }
-
-  .infobox-wrapper {
-    display: flex;
-    width: 381px;
-  }
-
-  .infobox-wrapper-description {
-    display: flex;
-    width: 100%;
-    padding: 10px;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 1rem;
-    font-weight: normal;
-    gap: 5px;
-  }
-
-  .infobox-wrapper-img {
-    object-fit: cover;
-    width: 130px;
-    max-width: 130px;
-    height: 107px;
-    cursor: pointer;
-    object-position: center;
-    border-radius: 8px 0px 0px 0px;
-  }
-
-  .infobox-wrapper .infobox-wrapper-title,
-  .infobox-wrapper-cluster .infobox-wrapper-title {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-
-  .p-slider .p-slider-handle:focus-visible {
-    outline: 0 none;
-    box-shadow: none;
-  }
-
-  .p-slider .p-slider-handle:focus {
-    outline: none;
-    outline-offset: 2px;
-    box-shadow: none;
-  }
-
-  .map-dialog_progress.p-progressbar {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    z-index: 2;
-    background: transparent;
-  }
-
-  .p-timeline-event-opposite {
-    display: none;
-  }
-
-  .p-dialog {
-    max-height: calc(100% - 48px);
-    margin: 24px;
-    padding: 0;
-    box-shadow: var(--mat-dialog-container-elevation-shadow, 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12));
-    border: none;
-  }
-
-  .map-dialog-close-button {
-    position: fixed;
-    top: -20px;
-    right: -20px;
-    z-index: 3;
-  }
-
-  .p-button-custom {
-    color: inherit;
-    background-color: #fff;
-    border-color: transparent;
-  }
-
-
-  .p-dialog .p-dialog-content {
-    padding: 0;
-    border-radius: 20px;
-  }
-
-
-  .needed-element .mat-pseudo-checkbox {
-    display: none !important;
-  }
-
-}
-
-.c-map {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow: hidden;
-  background: var(--p-overlay-modal-background);
-
-  .c-map-toolbar-horizontal {
-    position: absolute;
-    z-index: 3;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 72px;
-    padding: 16px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: row;
-    pointer-events: none;
-
-    &.c-map-toolbar-horizontal__bottom {
-      top: auto;
-      bottom: 0;
-      padding: 16px 72px 16px 16px;
-    }
-
-    >*:not(.flex-fill) {
-      pointer-events: auto;
-    }
-  }
-
-  .c-map-toolbar-vertical {
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    right: 0;
-    width: 72px;
-    height: 100%;
-    padding: 16px 16px 16px 16px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    pointer-events: none;
-
-    >*:not(.flex-fill) {
-      pointer-events: auto;
-    }
-  }
-
-  .c-map__x-offset {
-    margin: 0 16px;
-  }
-
-  .c-map__right-offset {
-    margin-right: 16px;
-  }
-
-  .c-map__left-offset {
-    margin-left: 16px;
-  }
-
-  .c-map__y-offset {
-    margin: 16px 0;
-  }
-
-  .c-map__top-offset {
-    margin-top: 16px;
-  }
-
-  .c-map__bottom-offset {
-    margin-bottom: 16px;
-  }
-
-  .flex-fill {
-    flex: 1 1 auto !important;
-    pointer-events: none;
-  }
-
-}
-
-.c-map-dialog {
-  position: relative;
-  height: 100%;
-  background: var(--p-overlay-modal-background);
-  overflow: hidden;
-}
-
-.c-map-dialog_wrapper {
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  background: var(--p-overlay-modal-background);
-
-}
-
-.c-map-dialog_sidebar {
-  float: none;
-  width: 520px;
-  background: var(--p-overlay-modal-background);
-  position: relative;
-}
-
-.map-dialog_sidebar-toolbar {
-  padding: 0 16px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background: var(--surface-card);
-  height: 56px;
-
-  .mat-button {
-    .mat-icon {
-      margin-right: 4px;
-    }
-  }
-}
-
-.map-dialog_map-container {
-  flex-grow: 1;
-}
-
-
-::ng-deep .c-map-dialog_close-button {
-  position: fixed;
-  top: 3px;
-  right: 3px;
-  z-index: 3;
-  background-color: #fff;
-  border-radius: 50px !important;
-  color: #535353;
-}
-
-::ng-deep {
-  .p-sidebar-bottom {
-    bottom: 0;
-    position: absolute;
-    top: 57px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-}
-
-mgl-map {
-  height: 100%;
-  width: 100%;
 }
