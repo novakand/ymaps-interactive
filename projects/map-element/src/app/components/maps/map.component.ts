@@ -1,9 +1,7 @@
-// map.component.ts
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, NgZone, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { bbox } from '@turf/turf';
 import {
-    YMapComponent, YMapControlDirective, YMapControlsDirective,                     // <y-map>
+    YMapComponent, YMapControlDirective, YMapControlsDirective,                  
     YMapDefaultFeaturesLayerDirective,
     YMapDefaultMarkerDirective,
     YMapHintDirective,
@@ -12,16 +10,14 @@ import {
     YMapZoomControlDirective,
 } from 'angular-yandex-maps-v3';
 import { RouterModule } from '@angular/router';
-import { SkeletonModule } from 'primeng/skeleton';
 import { MapService } from './services/map-service';
-import { BehaviorSubject, catchError, combineLatest, debounceTime, delay, distinctUntilChanged, filter, forkJoin, map, Observable, of, Subject, switchMap, take, takeUntil, tap } from 'rxjs';
-import { BBox, Feature } from 'geojson';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, map, Subject, take, takeUntil, tap } from 'rxjs';
+import { BBox } from 'geojson';
 import { MapEventManager } from './services/map-event-manager';
 import { YMapFeatureDirective } from './directives/y-map-feature.directive';
 import { YMapFeatureDataSourceDirective } from './directives/y-map-feature-data-source.directive';
 import { YMapLayerDirective } from './directives/y-map-layer.directive';
 import { YMapClustererDirective } from './directives/y-map-clusterer.directive';
-import { CustomizationElements, YMapDefaultSchemeLayerProps, YMapLocationRequest } from '@yandex/ymaps3-types';
 import { LayoutService } from '../../services/layout.service';
 import { YMapMouseDirective } from './directives/y-map-mouse.directive';
 import { YMapSatelliteLayerDirective } from './directives/ymap-satelite-layer.directive';
@@ -32,7 +28,6 @@ import { OtherService } from '../../services/other.service';
 import { ZoomToFsPipe } from '../../pipes/text-zoom.pipe';
 import { BoundariesService } from '../../services/boundaries.service';
 import { PointsService } from '../../services/points.service';
-import { MapEvent } from '@yandex/ymaps3-types/imperative/YMapFeature/types';
 type Bounds = [[number, number], [number, number]];
 @Component({
     selector: 'app-map',
@@ -46,16 +41,11 @@ type Bounds = [[number, number], [number, number]];
         YMapFeatureDataSourceDirective,
         YMapFeatureDirective,
         YMapLayerDirective,
-        YMapClustererDirective,
-        YMapDefaultMarkerDirective,
         YMapMarkerDirective,
         YMapMouseDirective,
         YMapSatelliteLayerDirective,
-        YMapHybridLayerDirective,
         ZoomToFsPipe,
         YMapListenerDirective,
-        YMapHintDirective,
-        YMapZoomControlDirective,
         YMapControlsDirective,
         YMapControlDirective
     ],
@@ -68,7 +58,7 @@ export class MapComponent {
     private selectedId: string | null = null;
     private originalFill = new Map<string, { fill: any; fillOpacity: number }>();
     public popup;
-    legend = [
+    public legend = [
         { icon: 'arrow', text: 'Въезд' },
         { num: 1, text: 'Гостевая парковка' },
         { num: 2, text: 'Здание администрации' },
@@ -84,7 +74,7 @@ export class MapComponent {
     public theme = signal<'light' | 'dark'>('light');
     public bounds = signal<[[number, number], [number, number]]>([[-83.8, -170.8], [83.8, 170.8]]);
     public zoomRange = signal({ min: 5, max: 22 });
-    arrowDeg = 0;
+    public arrowDeg = 0;
     private selected: { ent?: any; id?: string } | null = null;
     public isMapLoad = false;
     public isCityBoundaries = false;
@@ -117,16 +107,7 @@ export class MapComponent {
     private _destroy$ = new Subject<boolean>();
     selectedInfo: { id?: string; name?: string; area?: number; statusLabel?: string } | null = null;
 
-    // Пример: где-то в вашем onClickMap / handleSelect
-    private showInfoFromProps(props: any) {
-        if (!props) { this.selectedInfo = null; return; }
-        this.selectedInfo = {
-            id: props.id ?? props.externalKey ?? props.label,
-            name: props.name ?? props.label,
-            area: props.area ?? props.specified_area,
-            statusLabel: props.statusLabel
-        };
-    }
+
     constructor(
         public cdr: ChangeDetectorRef,
         private ngZone: NgZone,
@@ -141,22 +122,6 @@ export class MapComponent {
         this.theme.set(this.layoutService.config().darkTheme ? 'dark' : 'light');
     }
 
-
-
-
-    onHint(e) {
-        console.log(e)
-        return 'LLLLLL'
-    }
-
-    markerClick(m: any) {
-        // возвращаем готовый handler
-        //return (domEvt: MouseEvent, mapEvt: any) => this.onMarkerClick(domEvt, mapEvt, m);
-    }
-
-    onMarkerClick(e,) {
-        console.log('marker click', e);
-    }
     private mercatorXY([lon, lat]: [number, number]) {
         const R = 20037508.34;
         const x = (lon * R) / 180;
@@ -168,9 +133,6 @@ export class MapComponent {
         const A = this.mercatorXY(a), B = this.mercatorXY(b);
         return Math.atan2(B.y - A.y, B.x - A.x) * 180 / Math.PI;
     }
-
-
-
 
     trackByIdFeature = (_: number, f: any) => `${f.id}::${f.__rev ?? 0}`;
 
@@ -189,10 +151,8 @@ export class MapComponent {
         this.cdr.markForCheck();
     }
 
-
     private getEntityId(ent: any): string | null {
         const p = ent?._props;
-        // у маркеров id часто лежит в p.properties.id
         return (
             p?.properties?.id ??
             p?.id ??
@@ -487,8 +447,6 @@ export class MapComponent {
             });
             this.parcelLabels = (fc.features ?? [])
                 .map((f, i) => {
-
-                    console.log(f, 'f')
                     const id = String(f.id ?? `parcel-${i}`);
                     const props = f.properties ?? {};
                     const c = props.center as any | undefined;
