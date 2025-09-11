@@ -174,64 +174,6 @@ export class MapComponent {
 
     trackByIdFeature = (_: number, f: any) => `${f.id}::${f.__rev ?? 0}`;
 
-    // private patchParcelById(id: string, patch: Partial<any>) {
-    //   const idx = this.parcelsFeatures.findIndex(x => String(x.id) === id);
-    //   if (idx === -1) return;
-    //   const f = this.parcelsFeatures[idx];
-
-    //   const next = {
-    //     ...f,
-    //     ...patch,
-    //     __rev: (f.__rev ?? 0) + 1,               // для trackBy
-    //   };
-
-    //   this.parcelsFeatures = [
-    //     ...this.parcelsFeatures.slice(0, idx),
-    //     next,
-    //     ...this.parcelsFeatures.slice(idx + 1),
-    //   ];
-    //   this.cdr.markForCheck();
-    // }
-
-    // достаём id как получится
-    // private getEntityId(ent: any): string | null {
-    //   return (
-    //     ent?._props?.id ??
-    //     (typeof ent?.id === 'function' ? ent.id() : ent?.id) ??
-    //     null
-    //   );
-    // }
-
-    // снять подсветку с текущего выбранного
-    // private unselectCurrent() {
-    //   const s = this.selected;
-    //   if (!s) return;
-
-    //   // сначала пробуем откатить прямо на entity
-    //   if (s.ent && this.hoverCache.has(s.ent)) {
-    //     const orig = this.hoverCache.get(s.ent)!;
-    //     const cur  = s.ent._props?.style ?? {};
-    //     if (typeof s.ent.update === 'function') {
-    //    //   s.ent.update({ style: { ...cur, fill: orig.fill, fillOpacity: orig.fillOpacity } });
-    //       (s.ent as any).requestRender?.();
-    //     }
-    //     this.hoverCache.delete(s.ent);
-    //   } else if (s.id) {
-    //     // fallback — откат через массив
-    //     const f = this.parcelsFeatures.find(x => String(x.id) === String(s.id));
-    //     if (f && f.__orig) {
-    //       this.patchParcelById(String(s.id), {
-    //         style: { ...(f.style ?? {}), fill: f.__orig.fill, fillOpacity: f.__orig.fillOpacity }
-    //       });
-    //       delete f.__orig;
-    //     }
-    //   }
-
-    //   this.selected = null;
-    // }
-
-
-
     private patchParcelById(id: string, patch: Partial<any>) {
         const idx = this.parcelsFeatures.findIndex(x => String(x.id) === id);
         if (idx === -1) return;
@@ -259,8 +201,6 @@ export class MapComponent {
         );
     }
 
-    // если id не совпадает, а в маркере есть properties — пробуем найти фичу по props
-
     closePopup() { this.popup = null; }
     private findParcelByMarkerProps(props: any) {
         if (!props) return null;
@@ -280,16 +220,13 @@ export class MapComponent {
         const f = this.parcelsFeatures.find(x => String(x.id) === String(id));
         if (!f) return;
 
-        // toggle
         if (this.selected?.id === String(id)) {
             this.unselectCurrent();
             return;
         }
 
-        // снять прошлое
         this.unselectCurrent();
 
-        // запомнить оригинал (один раз)
         if (!f.__orig) {
             f.__orig = { fill: f.style?.fill, fillOpacity: f.style?.fillOpacity };
         }
@@ -328,7 +265,6 @@ export class MapComponent {
         return (p?.id ?? (typeof ent?.id === 'function' ? ent.id() : ent?.id))?.toString() ?? null;
     }
 
-    // запасной способ получить координаты для попапа (центроид упрощённо)
     private getAnyCoords(ent: any): any | null {
         return ent?._props?.geometry?.coordinates?.[0]?.[0] ?? null;
     }
@@ -339,26 +275,23 @@ export class MapComponent {
         const ent = evt?.entity;
         const src = evt?.source;
 
-        // клик в пустоту — закрыть попап и снять выделение
         if (!ent || !src) {
             this.closePopup();
             this.unselectCurrent();
             return;
         }
 
-        // клик по маркеру → открыть попап и подсветить связанный полигон
         if (src === 'marker') {
             const id = this.getIdFromMarker(ent);
             const coords = this.getCoordsFromMarker(ent);
             const data = ent?._props?.properties ?? {};
             if (id && coords) {
                 this.popup = { id, coords, data };
-                this.toggleSelect(id); // подсветим соответствующий parcel
+                this.toggleSelect(id);
             }
             return;
         }
 
-        // клик по полигону parcels → подсветить (и можно открыть попап, если нужно)
         if (src === 'parcels') {
             const id = this.getIdFromParcel(ent);
             if (id) {
@@ -405,11 +338,8 @@ export class MapComponent {
 
         const props = ent._props?.properties ?? {};
         let id = this.getEntityId(ent);
-        console.log(id, 'id')          // попробуем взять id из entity
-        if (!id) id = props?.id;                  // или из props
+        if (!id) id = props?.id;
 
-        // Если прямого совпадения нет — поищем фичу по props маркера
-        console.log(id, 'id')
         if (id) {
             const f = this.parcelsFeatures.find(x => String(x.id) === String(id));
             if (f) { this.selectById(String(id)); return; }
@@ -704,7 +634,7 @@ export class MapComponent {
         const north = b[0][1];
         const east = b[1][0];
         const south = b[1][1];
-        return [west, south, east, north]; // [minLon, minLat, maxLon, maxLat]
+        return [west, south, east, north];
     }
 
     public remove() {

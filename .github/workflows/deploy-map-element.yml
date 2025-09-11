@@ -2,8 +2,7 @@ name: Deploy map-element to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ master ]   # деплой при каждом пуше в master
 
 permissions:
   contents: read
@@ -17,31 +16,16 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Build map-element
-        run: |
-          npx ng build map-element \
-            --configuration=production \
-            --base-href "/${{ github.event.repository.name }}/" \
-            --deploy-url "/${{ github.event.repository.name }}/"
-
-      # SPA fallback (чтобы маршруты/ресурсы не отдавали 404 на Pages)
-      - name: Create 404.html
+          cache: 'npm'
+      - run: npm ci
+      - run: npx ng build map-element --configuration=production --base-href=/ymaps-interactive/
+      - name: SPA 404
         run: cp dist/map-element/browser/index.html dist/map-element/browser/404.html
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -49,10 +33,10 @@ jobs:
 
   deploy:
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
