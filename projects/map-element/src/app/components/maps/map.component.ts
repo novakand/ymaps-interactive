@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, NgZone, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, inject, NgZone, PLATFORM_ID, signal } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
     YMapComponent, YMapControlDirective, YMapControlsDirective,
     YMapDefaultFeaturesLayerDirective,
@@ -28,7 +28,11 @@ import { OtherService } from '../../services/other.service';
 import { ZoomToFsPipe } from '../../pipes/text-zoom.pipe';
 import { BoundariesService } from '../../services/boundaries.service';
 import { PointsService } from '../../services/points.service';
+import { layerId, rasterDataSource } from './constants/canvas-tiles.datasource';
+import { YMapTileDataSourceDirective } from './directives/y-map-tile-data-source.directive';
+import { CanvasOverlaySource, LngLat } from './constants/canvas-overlay-source';
 type Bounds = [[number, number], [number, number]];
+type ControlsProps = { position: any; orientation: 'vertical' | 'horizontal' };
 @Component({
     selector: 'app-map',
     standalone: true,
@@ -47,7 +51,8 @@ type Bounds = [[number, number], [number, number]];
         ZoomToFsPipe,
         YMapListenerDirective,
         YMapControlsDirective,
-        YMapControlDirective
+        YMapControlDirective,
+        YMapTileDataSourceDirective
     ],
     templateUrl: './map.component.html',
     styleUrls: ['./map.component.scss'],
@@ -55,6 +60,7 @@ type Bounds = [[number, number], [number, number]];
 })
 
 export class MapComponent {
+
     private selectedId: string | null = null;
     private originalFill = new Map<string, { fill: any; fillOpacity: number }>();
     public popup;
@@ -83,7 +89,7 @@ export class MapComponent {
     public isVisibleSidebarBottom = false;
     public routeFeature: any;
     public markerFeatures: any;
-    public features: any = [];
+    public pontFeatures: any = [];
     public citiesFeatures: any | null = null;
     public parcelsFeatures: any[] = [];
     public otherFeatures: any[] = [];
@@ -105,9 +111,11 @@ export class MapComponent {
     private zoom$ = new BehaviorSubject<number>(this.zoom());
     private bounds$ = new BehaviorSubject<BBox | null>(null);
     private _destroy$ = new Subject<boolean>();
-    selectedInfo: { id?: string; name?: string; area?: number; statusLabel?: string } | null = null;
-
-
+    public selectedInfo: { id?: string; name?: string; area?: number; statusLabel?: string } | null = null;
+    overlays: CanvasOverlaySource[];
+    controlsProps: ControlsProps = { position: 'bottom right', orientation: 'vertical' };
+    private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
+    private readonly MOBILE_BP = 600; 
     constructor(
         public cdr: ChangeDetectorRef,
         public mapService: MapService,
@@ -119,6 +127,182 @@ export class MapComponent {
     ) {
 
         this.theme.set(this.layoutService.config().darkTheme ? 'dark' : 'light');
+        const poly1: LngLat[] = [
+            [36.54208649, 55.19205309],
+            [36.54245606, 55.19171904],
+            [36.54246162, 55.19171567],
+            [36.54308944, 55.19193614],
+            [36.54285438, 55.19218485],
+            [36.54280291, 55.19221],
+            [36.54273537, 55.19220906],
+            [36.54208649, 55.19205309],
+        ];;
+        const poly2: LngLat[] = [
+            [
+                36.54413314650203,
+                55.193205868885826
+            ],
+            [
+                36.544136351186474,
+                55.19319379570909
+            ],
+            [
+                36.544197240190904,
+                55.1931989176633
+            ],
+            [
+                36.544194676443354,
+                55.19321025913099
+            ],
+            [
+                36.544194676443354,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.544194035506465,
+                55.19321025913099
+            ],
+            [
+                36.54413314650203,
+                55.193205868885826
+            ]
+        ];
+        const poly3: LngLat[] = [
+
+            [
+                36.544358756286876,
+                55.193242088394065
+            ],
+            [
+                36.54437157502465,
+                55.1931989176633
+            ],
+            [
+                36.544419645291306,
+                55.193204039616845
+            ],
+            [
+                36.54440490374286,
+                55.19324684448868
+            ],
+            [
+                36.54440490374286,
+                55.19324684448868
+            ],
+            [
+                36.544404262805976,
+                55.19324684448868
+            ],
+            [
+                36.544404262805976,
+                55.19324684448868
+            ],
+            [
+                36.544404262805976,
+                55.19324684448868
+            ],
+            [
+                36.544404262805976,
+                55.19324684448868
+            ],
+            [
+                36.544358756286876,
+                55.193242088394065
+            ]
+        ]
+        this.overlays = [
+            new CanvasOverlaySource({
+                id: 'ov-1',
+                overlayPoly: poly1,
+                image: 'assets/images/location.svg',
+                padding: { left: 0.020, bottom: 0.090 },
+                rotateDeg: 0,
+                zIndex: 2010,
+                projection: 'ellipsoid',
+            }),
+            new CanvasOverlaySource({
+                id: 'ov-2',
+                overlayPoly: poly2,
+                image: 'assets/images/area-7.svg',
+                padding: 0,
+                rotateDeg: 0,
+                zIndex: 2010,
+            }),
+            new CanvasOverlaySource({
+                id: 'ov-3',
+                overlayPoly: poly3,
+                image: 'assets/images/area-5.svg',
+                padding: 0,
+                rotateDeg: -0.8,
+                zIndex: 2010,
+            }),
+        ];
+    }
+
+    tileSourceProps = {
+        id: layerId,
+        raster: rasterDataSource,
+        tileSize: 256,
+    } as const;
+
+    layerProps = {
+        source: layerId,
+        transparent: true,
+        type: layerId,
+        zIndex: 2010,
+    } as const;
+
+
+    trackByOverlay = (_: number, o: CanvasOverlaySource) => o['id'];
+
+    @HostListener('window:resize')
+    onResize() {
+        this.updateControlsPosition();
+    }
+
+    private updateControlsPosition() {
+        if (!this.isBrowser) return;
+        const mobile = window.innerWidth <= this.MOBILE_BP;
+        this.controlsProps = {
+            position: mobile ? 'bottom left' : 'bottom right',
+            orientation: 'vertical',
+        };
     }
 
     private mercatorXY([lon, lat]: [number, number]) {
@@ -160,9 +344,9 @@ export class MapComponent {
         );
     }
 
-    public closePopup() { 
+    public closePopup() {
         this.unselectCurrent();
-        this.popup = null; 
+        this.popup = null;
     }
 
     private findParcelByMarkerProps(props: any) {
@@ -226,11 +410,10 @@ export class MapComponent {
         return (p?.id ?? (typeof ent?.id === 'function' ? ent.id() : ent?.id))?.toString() ?? null;
     }
 
-    private getAnyCoords(ent: any): any | null {
-        return ent?._props?.geometry?.coordinates?.[0]?.[0] ?? null;
+    onClickCoord = (target, event) => {
+        const [lon, lat] = event.coordinates;
+        const [x, y] = event.screenCoordinates;
     }
-    private getParcelCentroid(_ent: any): any | null { return null; }
-
 
     public onClickMap = (evt: any) => {
         const ent = evt?.entity;
@@ -277,7 +460,7 @@ export class MapComponent {
     }
 
 
-    onClickFeature = (evt: any) => {
+    public onClickFeature = (evt: any) => {
         const ent = evt?.entity;
         if (!ent || evt.source !== 'parcels') return;
 
@@ -286,9 +469,6 @@ export class MapComponent {
 
         this.selectById(String(id));
     };
-
-
-
 
     public onClickMarker(evt: any) {
         const ent = evt?.entity;
@@ -307,9 +487,10 @@ export class MapComponent {
         if (byProps) { this.selectById(String(byProps.id)); }
     };
 
-    setArrowAngleByRoad(p1: [number, number], p2: [number, number]) {
+    public setArrowAngleByRoad(p1: [number, number], p2: [number, number]) {
         this.arrowDeg = this.bearingDegFrom(p1, p2);
     }
+
     public visitPositions(input: any, cb: (lon: number, lat: number) => void): void {
         if (!input) return;
 
@@ -534,7 +715,7 @@ export class MapComponent {
             .pipe(
                 take(1))
             .subscribe(fc => {
-                this.features = (fc.features ?? []).map((f, i) => {
+                this.pontFeatures = (fc.features ?? []).map((f, i) => {
                     return {
                         id: String(f.id ?? `points-${i}`),
                         ...f
@@ -610,7 +791,7 @@ export class MapComponent {
     }
 
     public removeClusters(): void {
-        this.features = [];
+        this.pontFeatures = [];
         this.cdr.detectChanges();
     }
 

@@ -37,13 +37,7 @@
               55.19082018
             ]
           ]
-        ],
-        "crs": {
-          "type": "name",
-          "properties": {
-            "name": "EPSG:4326"
-          }
-        }
+        ]
       },
       "properties": {
         "cadastralDistrictsCode": 40,
@@ -82,8 +76,8 @@
           "updated": "2025-04-29T09:40:00.471781",
           "updatedBy": "064EDE2E-1DAA-4758-B509-34BC38C4AA5D"
         },
-        "name": "05",
-        "area": 1855,
+        "name": "005",
+        "area": 1908,
         "statusLabel": "Свободно",
         "center": [
           36.543491,

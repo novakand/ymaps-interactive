@@ -79,8 +79,8 @@
           "updatedBy": "064EDE2E-1DAA-4758-B509-34BC38C4AA5D"
         },
         "name": "014",
-        "area": 1513,
-        "statusLabel": "Свободно",
+        "area": 1524,
+        "statusLabel": "Продано",
         "center": [
           36.547626,
           55.19173
@@ -88,11 +88,11 @@
         "strokeColor": "#ffffff",
         "strokeOpacity": 1,
         "strokeWeight": 1,
-        "fillColor": "#71975b",
+        "fillColor": "#E73626",
         "fillOpacity": 1,
-        "selectedFillColor": "#5d9a3c",
-        "isLabel": false,
-        "labelKind": ""
+        "selectedFillColor": "#d12818",
+        "isLabel": true,
+        "labelKind": "sold"
       }
     }
   ]

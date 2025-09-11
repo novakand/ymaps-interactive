@@ -38,6 +38,7 @@
         }
       },
       "properties": {
+
         "cadastralDistrictsCode": 40,
         "category": 36368,
         "categoryName": "Земельные участки ЕГРН",
@@ -74,8 +75,8 @@
           "updated": "2025-04-29T09:40:01.196851",
           "updatedBy": "064EDE2E-1DAA-4758-B509-34BC38C4AA5D"
         },
-        "name": "02",
-        "area": 1073,
+        "name": "002",
+        "area": 1100,
         "statusLabel": "Свободно",
         "center": [
           36.543122,

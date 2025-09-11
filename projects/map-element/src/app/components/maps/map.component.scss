@@ -7,6 +7,15 @@
   padding: 0 !important;
 }
 
+.svg-wrap {
+  position: relative;
+  will-change: transform;
+  pointer-events: none;
+
+  width: 260px;
+  height: 180px;
+}
+
 ::ng-deep {
 
   .map-legend {
@@ -47,20 +56,29 @@
 
   }
 
-  @media (max-width: 1200px) {
-    .map-legend__text {
-      font-size: 22px;
-    }
+ /* крупные ноутбуки/планшеты в ландшафте */
+@media (max-width: 1200px) {
+  .map-legend__text { font-size: 18px; }  /* было 22px — делаем меньше */
+  .map-legend__num  { font-size: 20px; }  /* было 20px — оставим/слегка меньше чем базу 24px */
+}
 
-    .map-legend__num {
-      font-size: 20px;
-      width: 22px;
-    }
+/* планшеты */
+@media (max-width: 1024px) {
+  .map-legend__text { font-size: 16px; }
+  .map-legend__num  { font-size: 18px; }
+}
 
-    .map-legend__item {
-      column-gap: 10px;
-    }
-  }
+/* телефоны */
+@media (max-width: 768px) {
+  .map-legend__text { font-size: 14px; }
+  .map-legend__num  { font-size: 16px; }
+}
+
+/* маленькие телефоны */
+@media (max-width: 480px) {
+  .map-legend__text { font-size: 13px; line-height: 0.1; }
+  .map-legend__num  { font-size: 14px; }
+}
 
   .parcel-badge {
     display: inline-flex;
@@ -198,13 +216,12 @@
 
 
   .marker-label__name {
-    transform: translate(-50%, -100%) rotate(var(--deg, 0deg)) scale(var(--scale, 1));
+    transform: translate(-50%, -100%) rotate(var(--deg, 0deg)) scale(var(--scale, 1.2));
     transform-origin: 50% 100%;
     font-size: var(--fsm, 1.5em);
     line-height: 1.05;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    line-height: 1.05;
-    font-weight: 900;
+    font-weight: 600;
     color: #f30000;
     pointer-events: none;
   }
