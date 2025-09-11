@@ -1,0 +1,60 @@
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": false,
+    "noImplicitAny": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": true,
+    "paths": {
+      "map-core": [
+        "./dist/map-core"
+      ]
+    },
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": true,
+    "strictPropertyInitialization": false,
+    "exactOptionalPropertyTypes": false,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInputAccessModifiers": false,
+    "strictInjectionParameters": false,
+    "typeCheckHostBindings": true,
+    "strictTemplates": false
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./projects/map-core/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/map-core/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/map-element/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/map-element/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/map-iframe/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/map-iframe/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/app/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/app/tsconfig.spec.json"
+    }
+  ]
+}
