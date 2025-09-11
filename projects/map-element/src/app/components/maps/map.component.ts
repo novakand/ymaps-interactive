@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, NgZone, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-    YMapComponent, YMapControlDirective, YMapControlsDirective,                  
+    YMapComponent, YMapControlDirective, YMapControlsDirective,
     YMapDefaultFeaturesLayerDirective,
     YMapDefaultMarkerDirective,
     YMapHintDirective,
@@ -69,7 +69,7 @@ export class MapComponent {
         { num: 7, text: 'Объекты инженерного обеспечения' },
         { num: 8, text: 'Лесная тропа' },
     ];
-    public center = signal<[number, number]>([36.551533, 55.199748]); // [lng,lat]
+    public center = signal<[number, number]>([36.551533, 55.199748]);
     public zoom = signal<number>(12);
     public theme = signal<'light' | 'dark'>('light');
     public bounds = signal<[[number, number], [number, number]]>([[-83.8, -170.8], [83.8, 170.8]]);
@@ -110,7 +110,6 @@ export class MapComponent {
 
     constructor(
         public cdr: ChangeDetectorRef,
-        private ngZone: NgZone,
         public mapService: MapService,
         private parcels: ParcelsService,
         private other: OtherService,
@@ -161,7 +160,11 @@ export class MapComponent {
         );
     }
 
-    closePopup() { this.popup = null; }
+    public closePopup() { 
+        this.unselectCurrent();
+        this.popup = null; 
+    }
+
     private findParcelByMarkerProps(props: any) {
         if (!props) return null;
         const p = props;

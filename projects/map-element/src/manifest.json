@@ -1,6 +1,6 @@
 {
-    "name": "mapbox track",
-    "short_name": "mapbox track",
+    "name": "ymaps",
+    "short_name": "ymaps",
     "start_url": "/",
     "display": "standalone",
     "theme_color": "#1863CC",

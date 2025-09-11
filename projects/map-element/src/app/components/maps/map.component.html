@@ -86,6 +86,7 @@
   <ng-container *ngFor="let f of boundariesFeatures; trackBy: trackById">
     <y-map-feature [props]="{
     source: 'boundaries',
+    disableRoundCoordinates:true,
     id: f.id,
     geometry: f.geometry,
     properties: f.properties,
