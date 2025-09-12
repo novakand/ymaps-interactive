@@ -13,12 +13,9 @@
   transform-origin: 50% 100%;
   pointer-events: none;
   line-height: 0;
-  /* убери contain — именно он обрезал содержимое */
-  /* contain: layout paint size;  <-- удалить */
-  overflow: visible; /* на всякий случай */
+  overflow: visible; 
 }
 
-/* Внутри картинка занимает 100% блока (масштаб задаём размерами блока) */
 .m-anchor > img{
   display: block;
   width: 100%;
@@ -35,7 +32,6 @@
 
 ::ng-deep {
 
- /* базовое — оставляем как есть */
 .map-legend { pointer-events:auto; user-select:none; padding:8px 10px; }
 .map-legend__item {
   display:grid; grid-template-columns:24px 1fr; align-items:center;
@@ -45,25 +41,24 @@
 .map-legend__arrow{ width:18px; height:auto; display:inline-block; transform:translateY(2px); }
 .map-legend__text { color:#fff; font-weight:600; font-size:20px; line-height:1; }
 
-/* телефоны/планшеты — две колонки, меньше отступы и шрифты */
+
 @media (max-width: 768px) {
   .map-legend{
     display:grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 колонки */
-    column-gap:14px;   /* горизонтальный зазор между колонками */
-    row-gap:6px;       /* вертикальный зазор между строками */
-    max-width: 92vw;   /* чтобы не уезжало за экран */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap:14px;  
+    row-gap:6px;     
+    max-width: 92vw;  
   }
   .map-legend__item{
-    margin:0;                     /* убираем внешний margin — используем row-gap */
-    grid-template-columns:20px 1fr; /* компактнее внутри ячейки */
+    margin:0;                   
+    grid-template-columns:20px 1fr; 
     column-gap:8px;
   }
   .map-legend__num  { width:20px; font-size:16px; }
   .map-legend__text { font-size:14px; line-height:1.15; }
 }
 
-/* маленькие телефоны */
 @media (max-width: 480px) {
   .map-legend{
     column-gap:10px; row-gap:4px; max-width: 95vw;
