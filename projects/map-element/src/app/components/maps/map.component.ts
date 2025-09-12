@@ -261,24 +261,24 @@ const mobile = window.innerWidth <= 600;
                 zIndex: 2010,
                 projection: 'ellipsoid',
             }),
-            new CanvasOverlaySource({
-                id: 'ov-2',
-                overlayPoly: poly2,
-                image: 'assets/images/area-7.svg',
-                  tilePx: (mobile ? 256 : 512) * dpr,
-                padding: 0,
-                rotateDeg: 0,
-                zIndex: 2010,
-            }),
-            new CanvasOverlaySource({
-                id: 'ov-3',
-                overlayPoly: poly3,
-                image: 'assets/images/area-5.svg',
-                  tilePx: (mobile ? 256 : 512) * dpr,
-                padding: 0,
-                rotateDeg: -0.8,
-                zIndex: 2010,
-            }),
+            // new CanvasOverlaySource({
+            //     id: 'ov-2',
+            //     overlayPoly: poly2,
+            //     image: 'assets/images/area-7.svg',
+            //       tilePx: (mobile ? 256 : 512) * dpr,
+            //     padding: 0,
+            //     rotateDeg: 0,
+            //     zIndex: 2010,
+            // }),
+            // new CanvasOverlaySource({
+            //     id: 'ov-3',
+            //     overlayPoly: poly3,
+            //     image: 'assets/images/area-5.svg',
+            //       tilePx: (mobile ? 256 : 512) * dpr,
+            //     padding: 0,
+            //     rotateDeg: -0.8,
+            //     zIndex: 2010,
+            // }),
         ];
     }
 
