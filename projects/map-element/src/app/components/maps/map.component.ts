@@ -11,7 +11,7 @@ import {
 } from 'angular-yandex-maps-v3';
 import { RouterModule } from '@angular/router';
 import { MapService } from './services/map-service';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, map, Subject, take, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, filter, map, Observable, shareReplay, startWith, Subject, take, takeUntil, tap } from 'rxjs';
 import { BBox } from 'geojson';
 import { MapEventManager } from './services/map-event-manager';
 import { YMapFeatureDirective } from './directives/y-map-feature.directive';
@@ -31,6 +31,7 @@ import { PointsService } from '../../services/points.service';
 import { layerId, rasterDataSource } from './constants/canvas-tiles.datasource';
 import { YMapTileDataSourceDirective } from './directives/y-map-tile-data-source.directive';
 import { CanvasOverlaySource, LngLat } from './constants/canvas-overlay-source';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 type Bounds = [[number, number], [number, number]];
 type ControlsProps = { position: any; orientation: 'vertical' | 'horizontal' };
 @Component({
@@ -104,6 +105,7 @@ export class MapComponent {
         isLabel: any
     }> = [];
 
+    
     public labelMinZoom = 17;
     public currentZoom = 0;
     private _eventManager: MapEventManager = new MapEventManager(inject(NgZone));
@@ -126,6 +128,8 @@ export class MapComponent {
         public layoutService: LayoutService,
     ) {
 
+       const dpr = Math.min(window.devicePixelRatio || 1, 2); // кап до 2
+const mobile = window.innerWidth <= 600;
         this.theme.set(this.layoutService.config().darkTheme ? 'dark' : 'light');
         const poly1: LngLat[] = [
             [36.54208649, 55.19205309],
@@ -252,6 +256,7 @@ export class MapComponent {
                 overlayPoly: poly1,
                 image: 'assets/images/location.svg',
                 padding: { left: 0.020, bottom: 0.090 },
+                 tilePx: (mobile ? 256 : 512) * dpr,
                 rotateDeg: 0,
                 zIndex: 2010,
                 projection: 'ellipsoid',
@@ -260,6 +265,7 @@ export class MapComponent {
                 id: 'ov-2',
                 overlayPoly: poly2,
                 image: 'assets/images/area-7.svg',
+                  tilePx: (mobile ? 256 : 512) * dpr,
                 padding: 0,
                 rotateDeg: 0,
                 zIndex: 2010,
@@ -268,6 +274,7 @@ export class MapComponent {
                 id: 'ov-3',
                 overlayPoly: poly3,
                 image: 'assets/images/area-5.svg',
+                  tilePx: (mobile ? 256 : 512) * dpr,
                 padding: 0,
                 rotateDeg: -0.8,
                 zIndex: 2010,
@@ -288,22 +295,21 @@ export class MapComponent {
         zIndex: 2010,
     } as const;
 
+private bo = inject(BreakpointObserver);
 
+  // считаем мобилкой всё <= 600px (можно заменить на Breakpoints.Handset)
+  controlsProps$: Observable<ControlsProps> = this.bo
+    .observe(['(max-width: 600px)'])
+    .pipe(
+      map(state => ({
+        position: state.matches ? 'bottom left' : 'bottom right',
+        orientation: 'vertical' as const
+      })),
+      startWith({ position: 'bottom right' as const, orientation: 'vertical' as const }),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
     trackByOverlay = (_: number, o: CanvasOverlaySource) => o['id'];
 
-    @HostListener('window:resize')
-    onResize() {
-        this.updateControlsPosition();
-    }
-
-    private updateControlsPosition() {
-        if (!this.isBrowser) return;
-        const mobile = window.innerWidth <= this.MOBILE_BP;
-        this.controlsProps = {
-            position: mobile ? 'bottom left' : 'bottom right',
-            orientation: 'vertical',
-        };
-    }
 
     private mercatorXY([lon, lat]: [number, number]) {
         const R = 20037508.34;

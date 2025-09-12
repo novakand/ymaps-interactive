@@ -35,43 +35,26 @@
    <y-map-layer [props]="layerProps"></y-map-layer> -->
 
   <!-- слой, который использует источник по id -->
-  <!-- <ng-container *ngFor="let o of overlays; trackBy: trackByOverlay">
+  <ng-container *ngFor="let o of overlays; trackBy: trackByOverlay">
   <y-map-tile-data-source [props]="o.tileSourceProps"></y-map-tile-data-source>
   <y-map-layer [props]="o.layerProps"></y-map-layer>
-</ng-container> -->
+</ng-container>
 
-  <y-map-controls [props]="{ position: 'bottom right', orientation: 'vertical' }">
-    <y-map-control
-      class="no-bg-control"
-      data-control="legend"
-    >
-      <div class="map-legend">
-        <div
-          class="map-legend__item"
-          *ngFor="let it of legend"
-        >
-          <div class="map-legend__num">
-            <svg
-              *ngIf="it.icon === 'arrow'"
-              class="map-legend__arrow"
-              viewBox="0 0 40 58"
-              aria-hidden="true"
-            >
-              <path
-                d="M20 58 L4 14 L36 14 Z"
-                fill="#E73527"
-                stroke="#E73527"
-              />
-            </svg>
-
-            <span *ngIf="!it.icon">{{ it.num }}</span>
-          </div>
-
-          <div class="map-legend__text">{{ it.text }}</div>
+  <y-map-controls [props]="controlsProps$ | async">
+  <y-map-control class="no-bg-control" data-control="legend">
+    <div class="map-legend">
+      <div class="map-legend__item" *ngFor="let it of legend">
+        <div class="map-legend__num">
+          <svg *ngIf="it.icon === 'arrow'" class="map-legend__arrow" viewBox="0 0 40 58" aria-hidden="true">
+            <path d="M20 58 L4 14 L36 14 Z" fill="#E73527" stroke="#E73527" />
+          </svg>
+          <span *ngIf="!it.icon">{{ it.num }}</span>
         </div>
+        <div class="map-legend__text">{{ it.text }}</div>
       </div>
-    </y-map-control>
-  </y-map-controls>
+    </div>
+  </y-map-control>
+</y-map-controls>
 
   <ng-container *ngFor="let f of parcelsFeatures; trackBy: trackByIdFeature">
     <y-map-feature [props]="{
