@@ -69,7 +69,7 @@
     color: #fff;
     font-weight: 600;
     font-size: 20px;
-    line-height: 1.25;
+    line-height: 1;
 
   }
 
@@ -93,7 +93,7 @@
 
 /* маленькие телефоны */
 @media (max-width: 480px) {
-  .map-legend__text { font-size: 13px; line-height: 0.1; }
+  .map-legend__text { font-size: 10px; }
   .map-legend__num  { font-size: 14px; }
 }
 

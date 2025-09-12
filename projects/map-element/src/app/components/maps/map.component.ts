@@ -107,7 +107,7 @@ export class MapComponent {
         isLabel: any
     }> = [];
 
-    
+
     public labelMinZoom = 17;
     public currentZoom = 0;
     private _eventManager: MapEventManager = new MapEventManager(inject(NgZone));
@@ -119,7 +119,7 @@ export class MapComponent {
     overlays: CanvasOverlaySource[];
     controlsProps: ControlsProps = { position: 'bottom right', orientation: 'vertical' };
     private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-    private readonly MOBILE_BP = 600; 
+    private readonly MOBILE_BP = 600;
     constructor(
         public cdr: ChangeDetectorRef,
         public mapService: MapService,
@@ -130,8 +130,8 @@ export class MapComponent {
         public layoutService: LayoutService,
     ) {
 
-       const dpr = Math.min(window.devicePixelRatio || 1, 2); // кап до 2
-const mobile = window.innerWidth <= 600;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2); // кап до 2
+        const mobile = window.innerWidth <= 600;
         this.theme.set(this.layoutService.config().darkTheme ? 'dark' : 'light');
         const poly1: LngLat[] = [
             [36.54208649, 55.19205309],
@@ -258,7 +258,7 @@ const mobile = window.innerWidth <= 600;
                 overlayPoly: poly1,
                 image: 'assets/images/location.svg',
                 padding: { left: 0.020, bottom: 0.090 },
-                 tilePx: (mobile ? 256 : 512) * dpr,
+                tilePx: (mobile ? 256 : 512) * dpr,
                 rotateDeg: 0,
                 zIndex: 2010,
                 projection: 'ellipsoid',
@@ -298,19 +298,19 @@ const mobile = window.innerWidth <= 600;
         zIndex: 2010,
     } as const;
 
-private bo = inject(BreakpointObserver);
+    private bo = inject(BreakpointObserver);
 
-  // считаем мобилкой всё <= 600px (можно заменить на Breakpoints.Handset)
-  controlsProps$: Observable<ControlsProps> = this.bo
-    .observe(['(max-width: 600px)'])
-    .pipe(
-      map(state => ({
-        position: state.matches ? 'bottom left' : 'bottom right',
-        orientation: 'vertical' as const
-      })),
-      startWith({ position: 'bottom right' as const, orientation: 'vertical' as const }),
-      shareReplay({ bufferSize: 1, refCount: true })
-    );
+    // считаем мобилкой всё <= 600px (можно заменить на Breakpoints.Handset)
+    controlsProps$: Observable<ControlsProps> = this.bo
+        .observe(['(max-width: 600px)'])
+        .pipe(
+            map(state => ({
+                position: state.matches ? 'bottom left' : 'bottom right',
+                orientation: 'vertical' as const
+            })),
+            startWith({ position: 'bottom right' as const, orientation: 'vertical' as const }),
+            shareReplay({ bufferSize: 1, refCount: true })
+        );
     trackByOverlay = (_: number, o: CanvasOverlaySource) => o['id'];
 
 
