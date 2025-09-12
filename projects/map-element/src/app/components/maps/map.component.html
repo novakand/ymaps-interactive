@@ -31,8 +31,8 @@
 
 
 
-   <y-map-tile-data-source [props]="tileSourceProps"></y-map-tile-data-source>
-   <y-map-layer [props]="layerProps"></y-map-layer>
+   <!-- <y-map-tile-data-source [props]="tileSourceProps"></y-map-tile-data-source>
+   <y-map-layer [props]="layerProps"></y-map-layer> -->
 
   <!-- слой, который использует источник по id -->
   <!-- <ng-container *ngFor="let o of overlays; trackBy: trackByOverlay">
@@ -40,7 +40,7 @@
   <y-map-layer [props]="o.layerProps"></y-map-layer>
 </ng-container> -->
 
-  <y-map-controls [props]="controlsProps">
+  <y-map-controls [props]="{ position: 'bottom right', orientation: 'vertical' }">
     <y-map-control
       class="no-bg-control"
       data-control="legend"
