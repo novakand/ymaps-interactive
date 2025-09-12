@@ -32,6 +32,7 @@ import { layerId, rasterDataSource } from './constants/canvas-tiles.datasource';
 import { YMapTileDataSourceDirective } from './directives/y-map-tile-data-source.directive';
 import { CanvasOverlaySource, LngLat } from './constants/canvas-overlay-source';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { ZoomToScalePipe } from '../../pipes/zoom-scale.directive';
 type Bounds = [[number, number], [number, number]];
 type ControlsProps = { position: any; orientation: 'vertical' | 'horizontal' };
 @Component({
@@ -50,6 +51,7 @@ type ControlsProps = { position: any; orientation: 'vertical' | 'horizontal' };
         YMapMouseDirective,
         YMapSatelliteLayerDirective,
         ZoomToFsPipe,
+        ZoomToScalePipe,
         YMapListenerDirective,
         YMapControlsDirective,
         YMapControlDirective,
@@ -270,6 +272,7 @@ const mobile = window.innerWidth <= 600;
             //     rotateDeg: 0,
             //     zIndex: 2010,
             // }),
+
             // new CanvasOverlaySource({
             //     id: 'ov-3',
             //     overlayPoly: poly3,
@@ -418,6 +421,7 @@ private bo = inject(BreakpointObserver);
 
     onClickCoord = (target, event) => {
         const [lon, lat] = event.coordinates;
+        console.log([lon, lat])
         const [x, y] = event.screenCoordinates;
     }
 

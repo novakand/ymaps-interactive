@@ -22,12 +22,13 @@
   <y-map-feature-data-source [props]="{ id: 'other' }" />
   <y-map-feature-data-source [props]="{ id: 'marker' }" />
   <y-map-feature-data-source [props]="{ id: 'boundaries' }" />
+  <y-map-feature-data-source [props]="{ id: 'obj' }" />
 
   <y-map-layer [props]="{ source: 'parcels', type: 'features', zIndex: 2010 }"></y-map-layer>
   <y-map-layer [props]="{ source: 'other', type: 'features', zIndex: 2010 }"></y-map-layer>
   <y-map-layer [props]="{ source: 'boundaries', type: 'features', zIndex: 2010 }"></y-map-layer>
   <y-map-layer [props]="{ source: 'marker', type: 'markers', zIndex: 2020 }"></y-map-layer>
-
+<y-map-layer [props]="{ source: 'obj', type: 'markers', zIndex: 2019 }"></y-map-layer>
 
 
 
@@ -124,8 +125,6 @@
     </ng-container>
   </ng-container>
 
-
-
   <ng-container *ngIf="currentZoom >= labelMinZoom">
     <ng-container *ngFor="let m of pontFeatures; trackBy: trackById">
       <y-map-marker [props]="{ source: 'marker', coordinates: m.geometry.coordinates }">
@@ -148,7 +147,7 @@
   >
     <div
       class="arrow-pin"
-      [style.--deg]="arrowDeg + 'deg'"
+      
     >
       <svg
         width="40"
@@ -169,10 +168,33 @@
     </div>
   </y-map-marker>
 
-  
 
+<y-map-marker
+  *ngIf="currentZoom >= 19"
+  [props]="{ source: 'obj', coordinates: [36.54417412740146, 55.193179068112045] }"
+>
+  <div class="m-anchor"
+       [style.width.px]="30 * (currentZoom | zoomToScale: labelMinZoom : 1 : 2 : 22)"
+       [style.height.px]="26 * (currentZoom | zoomToScale: labelMinZoom : 1 : 2 : 22)">
+    <img src="assets/images/area-7.svg" alt="">
+  </div>
+</y-map-marker>
+
+
+<y-map-marker
+*ngIf="currentZoom >= 19"
+  [props]="{ source: 'obj', coordinates: [36.544373131545164, 55.19320986234068] }"
+>
+   <div class="m-anchor"
+       [style.width.px]="30 * (currentZoom | zoomToScale: labelMinZoom : 1 : 2 : 22)"
+       [style.height.px]="26 * (currentZoom | zoomToScale: labelMinZoom : 1 : 2 : 22)">
+    <img src="assets/images/area-5.svg" alt="">
+  </div>
+</y-map-marker>
+
+  
   <y-map-listener [props]="{
-    onFastClick: onClickMap,
+    onFastClick: onClickCoord,
     
   }" />
 
