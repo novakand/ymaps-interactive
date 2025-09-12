@@ -35,66 +35,42 @@
 
 ::ng-deep {
 
-  .map-legend {
-    pointer-events: auto;
-    user-select: none;
-    padding: 8px 10px;
-  }
-
-  .map-legend__item {
-    display: grid;
-    grid-template-columns: 24px 1fr;
-    align-items: center;
-    column-gap: 12px;
-    margin: 10px 0;
-  }
-
-  .map-legend__num {
-    width: 24px;
-    text-align: center;
-    color: #E73527;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 1;
-  }
-
-  .map-legend__arrow {
-    width: 18px;
-    height: auto;
-    display: inline-block;
-    transform: translateY(2px);
-  }
-
-  .map-legend__text {
-    color: #fff;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 1;
-
-  }
-
- /* крупные ноутбуки/планшеты в ландшафте */
-@media (max-width: 1200px) {
-  .map-legend__text { font-size: 18px; }  /* было 22px — делаем меньше */
-  .map-legend__num  { font-size: 20px; }  /* было 20px — оставим/слегка меньше чем базу 24px */
+ /* базовое — оставляем как есть */
+.map-legend { pointer-events:auto; user-select:none; padding:8px 10px; }
+.map-legend__item {
+  display:grid; grid-template-columns:24px 1fr; align-items:center;
+  column-gap:12px; margin:10px 0;
 }
+.map-legend__num  { width:24px; text-align:center; color:#E73527; font-weight:700; font-size:24px; line-height:1; }
+.map-legend__arrow{ width:18px; height:auto; display:inline-block; transform:translateY(2px); }
+.map-legend__text { color:#fff; font-weight:600; font-size:20px; line-height:1; }
 
-/* планшеты */
-@media (max-width: 1024px) {
-  .map-legend__text { font-size: 16px; }
-  .map-legend__num  { font-size: 18px; }
-}
-
-/* телефоны */
+/* телефоны/планшеты — две колонки, меньше отступы и шрифты */
 @media (max-width: 768px) {
-  .map-legend__text { font-size: 14px; }
-  .map-legend__num  { font-size: 16px; }
+  .map-legend{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 колонки */
+    column-gap:14px;   /* горизонтальный зазор между колонками */
+    row-gap:6px;       /* вертикальный зазор между строками */
+    max-width: 92vw;   /* чтобы не уезжало за экран */
+  }
+  .map-legend__item{
+    margin:0;                     /* убираем внешний margin — используем row-gap */
+    grid-template-columns:20px 1fr; /* компактнее внутри ячейки */
+    column-gap:8px;
+  }
+  .map-legend__num  { width:20px; font-size:16px; }
+  .map-legend__text { font-size:14px; line-height:1.15; }
 }
 
 /* маленькие телефоны */
 @media (max-width: 480px) {
-  .map-legend__text { font-size: 10px; }
-  .map-legend__num  { font-size: 14px; }
+  .map-legend{
+    column-gap:10px; row-gap:4px; max-width: 95vw;
+  }
+  .map-legend__item{ grid-template-columns:18px 1fr; column-gap:6px; }
+  .map-legend__num  { width:18px; font-size:14px; }
+  .map-legend__text { font-size:12px; }
 }
 
   .parcel-badge {
