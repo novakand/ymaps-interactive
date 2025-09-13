@@ -41,7 +41,7 @@
 
 
   <y-map-controls [props]="controlsProps$ | async">
- <y-map-control class="no-bg-control" data-control="legend">
+ <y-map-control *ngIf="currentZoom <= 17" class="no-bg-control" data-control="legend">
   <div class="map-legend">
     <div class="map-legend__item" *ngFor="let it of legend">
       <div class="map-legend__num">
