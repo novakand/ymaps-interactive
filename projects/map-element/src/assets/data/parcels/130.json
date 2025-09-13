@@ -85,14 +85,17 @@
           36.546525,
           55.193643
         ],
-       "strokeColor": "#ffffff",
+        "strokeColor": "#ffffff",
         "strokeOpacity": 1,
         "strokeWeight": 1,
         "fillColor": "#E73626",
         "fillOpacity": 1,
         "selectedFillColor": "#d12818",
         "isLabel": true,
-        "labelKind": "sold"
+        "labelKind": "sold",
+        "labelButton": "Бронировать",
+        "urlButton": "https://forms.amocrm.ru/rwxcwlc",
+        "price": null
       }
     }
   ]

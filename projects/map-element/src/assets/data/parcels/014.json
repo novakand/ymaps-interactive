@@ -92,7 +92,10 @@
         "fillOpacity": 1,
         "selectedFillColor": "#d12818",
         "isLabel": true,
-        "labelKind": "sold"
+        "labelKind": "sold",
+        "labelButton": "Бронировать",
+        "urlButton": "https://forms.amocrm.ru/rwxcwlc",
+        "price": null
       }
     }
   ]

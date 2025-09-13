@@ -66,8 +66,11 @@ export class MapComponent {
 
     private selectedId: string | null = null;
     private originalFill = new Map<string, { fill: any; fillOpacity: number }>();
-    public popup;
+    public popup: any;
     public legend = [
+        { swatch: '#71975b', text: 'Свободно' },
+        { swatch: '#f6a000', text: 'Забронировано' },
+        { swatch: '#E73626', text: 'Продано' },
         { icon: 'arrow', text: 'Въезд' },
         { num: 1, text: 'Гостевая парковка' },
         { num: 2, text: 'Здание администрации' },
@@ -77,6 +80,7 @@ export class MapComponent {
         { num: 6, text: 'Пожарный пруд' },
         { num: 7, text: 'Объекты инженерного обеспечения' },
         { num: 8, text: 'Лесная тропа' },
+
     ];
     public center = signal<[number, number]>([36.551533, 55.199748]);
     public zoom = signal<number>(12);

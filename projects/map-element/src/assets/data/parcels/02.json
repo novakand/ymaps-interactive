@@ -38,7 +38,6 @@
         }
       },
       "properties": {
-
         "cadastralDistrictsCode": 40,
         "category": 36368,
         "categoryName": "Земельные участки ЕГРН",
@@ -89,7 +88,10 @@
         "fillOpacity": 1,
         "selectedFillColor": "#5d9a3c",
         "isLabel": false,
-        "labelKind": ""
+        "labelKind": "",
+        "labelButton": "Бронировать",
+        "urlButton": "https://forms.amocrm.ru/rwxcwlc",
+        "price": null
       }
     }
   ]
