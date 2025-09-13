@@ -45,18 +45,14 @@
   <div class="map-legend">
     <div class="map-legend__item" *ngFor="let it of legend">
       <div class="map-legend__num">
-        <!-- квадрат-метка статуса -->
         <span *ngIf="it.swatch"
               class="map-legend__swatch"
               [style.background]="it.swatch"></span>
-
-        <!-- стрелка "Въезд" -->
         <svg *ngIf="!it.swatch && it.icon === 'arrow'"
              class="map-legend__arrow" viewBox="0 0 40 58" aria-hidden="true">
           <path d="M20 58 L4 14 L36 14 Z" fill="#E73527" stroke="#E73527" />
         </svg>
 
-        <!-- номер -->
         <span *ngIf="!it.swatch && !it.icon">{{ it.num }}</span>
       </div>
 

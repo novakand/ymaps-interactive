@@ -76,21 +76,21 @@
         },
         "name": "003",
         "area": 1173,
-        "statusLabel": "Свободно",
         "center": [
           36.543316,
           55.191312
         ],
+        "statusLabel": "Забронировано",
         "strokeColor": "#ffffff",
         "strokeOpacity": 1,
         "strokeWeight": 1,
-        "fillColor": "#71975b",
+        "fillColor": "#f6a000",
         "fillOpacity": 1,
-        "selectedFillColor": "#5d9a3c",
-        "isLabel": false,
-        "labelKind": "",
-        "labelButton": "Бронировать",
-        "urlButton": "https://forms.amocrm.ru/rwxcwlc",
+        "selectedFillColor": "#ffa600",
+        "isLabel": true,
+        "labelKind": "reserved",
+        "labelButton": "",
+        "urlButton": "",
         "price": null
       }
     }
