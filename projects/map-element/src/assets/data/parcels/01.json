@@ -90,8 +90,8 @@
         "isLabel": true,
         "labelKind": "sold",
         "labelButton": "Бронировать",
-        "urlButton": "https://forms.amocrm.ru/rwxcwlc",
-        "price": 9000
+        "urlButton": "",
+        "price": null
       }
     }
   ]

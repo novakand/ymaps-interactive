@@ -94,7 +94,7 @@
         "isLabel": true,
         "labelKind": "sold",
         "labelButton": "Бронировать",
-        "urlButton": "https://forms.amocrm.ru/rwxcwlc",
+         "urlButton": "",
         "price": null
       }
     }
