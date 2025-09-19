@@ -3,11 +3,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
     YMapComponent, YMapControlDirective, YMapControlsDirective,
     YMapDefaultFeaturesLayerDirective,
-    YMapDefaultMarkerDirective,
-    YMapHintDirective,
     YMapListenerDirective,
     YMapMarkerDirective,
-    YMapZoomControlDirective,
 } from 'angular-yandex-maps-v3';
 import { RouterModule } from '@angular/router';
 import { MapService } from './services/map-service';
@@ -17,11 +14,8 @@ import { MapEventManager } from './services/map-event-manager';
 import { YMapFeatureDirective } from './directives/y-map-feature.directive';
 import { YMapFeatureDataSourceDirective } from './directives/y-map-feature-data-source.directive';
 import { YMapLayerDirective } from './directives/y-map-layer.directive';
-import { YMapClustererDirective } from './directives/y-map-clusterer.directive';
 import { LayoutService } from '../../services/layout.service';
-import { YMapMouseDirective } from './directives/y-map-mouse.directive';
 import { YMapSatelliteLayerDirective } from './directives/ymap-satelite-layer.directive';
-import { YMapHybridLayerDirective } from './directives/ymap-hybrid-layer.directive';
 import { YMapDefaultSchemeLayerDirective } from './directives/y-map-default-scheme-layer.directive';
 import { ParcelsService } from '../../services/parcels.service';
 import { OtherService } from '../../services/other.service';
@@ -35,6 +29,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ZoomToScalePipe } from '../../pipes/zoom-scale.directive';
 type Bounds = [[number, number], [number, number]];
 type ControlsProps = { position: any; orientation: 'vertical' | 'horizontal' };
+type Basemap = 'scheme' | 'hybrid';
 @Component({
     selector: 'app-map',
     standalone: true,
@@ -48,7 +43,6 @@ type ControlsProps = { position: any; orientation: 'vertical' | 'horizontal' };
         YMapFeatureDirective,
         YMapLayerDirective,
         YMapMarkerDirective,
-        YMapMouseDirective,
         YMapSatelliteLayerDirective,
         ZoomToFsPipe,
         ZoomToScalePipe,
@@ -83,10 +77,12 @@ export class MapComponent {
 
     ];
     public center = signal<[number, number]>([36.551533, 55.199748]);
+    public mapMode = signal<'vector' | 'raster'>('vector');
     public zoom = signal<number>(12);
     public theme = signal<'light' | 'dark'>('light');
     public bounds = signal<[[number, number], [number, number]]>([[-83.8, -170.8], [83.8, 170.8]]);
     public zoomRange = signal({ min: 5, max: 22 });
+    basemap = signal<any>('scheme');
     public arrowDeg = 0;
     private selected: { ent?: any; id?: string } | null = null;
     public isMapLoad = false;
@@ -147,115 +143,7 @@ export class MapComponent {
             [36.54273537, 55.19220906],
             [36.54208649, 55.19205309],
         ];;
-        const poly2: LngLat[] = [
-            [
-                36.54413314650203,
-                55.193205868885826
-            ],
-            [
-                36.544136351186474,
-                55.19319379570909
-            ],
-            [
-                36.544197240190904,
-                55.1931989176633
-            ],
-            [
-                36.544194676443354,
-                55.19321025913099
-            ],
-            [
-                36.544194676443354,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.544194035506465,
-                55.19321025913099
-            ],
-            [
-                36.54413314650203,
-                55.193205868885826
-            ]
-        ];
-        const poly3: LngLat[] = [
-
-            [
-                36.544358756286876,
-                55.193242088394065
-            ],
-            [
-                36.54437157502465,
-                55.1931989176633
-            ],
-            [
-                36.544419645291306,
-                55.193204039616845
-            ],
-            [
-                36.54440490374286,
-                55.19324684448868
-            ],
-            [
-                36.54440490374286,
-                55.19324684448868
-            ],
-            [
-                36.544404262805976,
-                55.19324684448868
-            ],
-            [
-                36.544404262805976,
-                55.19324684448868
-            ],
-            [
-                36.544404262805976,
-                55.19324684448868
-            ],
-            [
-                36.544404262805976,
-                55.19324684448868
-            ],
-            [
-                36.544358756286876,
-                55.193242088394065
-            ]
-        ]
+       
         this.overlays = [
             new CanvasOverlaySource({
                 id: 'ov-1',
@@ -267,25 +155,7 @@ export class MapComponent {
                 zIndex: 2010,
                 projection: 'ellipsoid',
             }),
-            // new CanvasOverlaySource({
-            //     id: 'ov-2',
-            //     overlayPoly: poly2,
-            //     image: 'assets/images/area-7.svg',
-            //       tilePx: (mobile ? 256 : 512) * dpr,
-            //     padding: 0,
-            //     rotateDeg: 0,
-            //     zIndex: 2010,
-            // }),
 
-            // new CanvasOverlaySource({
-            //     id: 'ov-3',
-            //     overlayPoly: poly3,
-            //     image: 'assets/images/area-5.svg',
-            //       tilePx: (mobile ? 256 : 512) * dpr,
-            //     padding: 0,
-            //     rotateDeg: -0.8,
-            //     zIndex: 2010,
-            // }),
         ];
     }
 
@@ -304,7 +174,8 @@ export class MapComponent {
 
     private bo = inject(BreakpointObserver);
 
-    // считаем мобилкой всё <= 600px (можно заменить на Breakpoints.Handset)
+    setBasemap(v: Basemap) { this.basemap.set(v); }
+
     controlsProps$: Observable<ControlsProps> = this.bo
         .observe(['(max-width: 600px)'])
         .pipe(
@@ -355,6 +226,10 @@ export class MapComponent {
             (typeof ent?.id === 'function' ? ent.id() : ent?.id) ??
             null
         );
+    }
+
+    setMapMode(mode: 'vector' | 'raster') {
+        // this.mapMode.set(mode);
     }
 
     public closePopup() {
